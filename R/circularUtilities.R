@@ -1,5 +1,18 @@
 
-# Function to generate uniform distribution pdf values that have a range on the circle.
+#' Circular Uniform Distribution
+#'
+#' Evaluate the circular uniform distribution.
+#'
+#' @param x Angle to evaluate.
+#' @param from Lower bound of the circular uniform distribution.
+#' @param to Upper bound of the circular uniform distribution.
+#'
+#' @return Numeric; probability of x.
+#' @export
+#'
+#' @examples
+#' dcunif(1, 6, 2)
+#'
 dcunif <- function(x, from = 0, to = 2*pi) {
 
   # Take the modulus here so that the ranges provided are irrelevant.

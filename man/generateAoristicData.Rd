@@ -4,7 +4,8 @@
 \alias{generateAoristicData}
 \title{Generate aoristic data}
 \usage{
-generateAoristicData(n = 30, trueDistGen = function(n) rvmc(n, 0, 3),
+generateAoristicData(n = 30, trueDistGen = function(n)
+  as.numeric(suppressWarnings(circular::rvonmises(n, 0, 3))),
   intervalSampler = function(n) runif(n, 0, 2),
   LBSampler = intervalSampler, UBSampler = intervalSampler)
 }
@@ -34,7 +35,9 @@ difference.}
 A data frame containing the start, end, and true values.
 }
 \description{
-This function generates aoristic circular data.
+This function generates aoristic circular data from a true distribution
+generation function and two function to generate the lower and upper
+distances from the true point.
 }
 \examples{
 generateAoristicData()

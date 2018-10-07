@@ -28,24 +28,45 @@
 #' generateAoristicData()
 #'
 generateAoristicData <- function(n = 30,
-                                 trueDistGen = function(n) rvmc(n, 0, 3),
+                                 trueDistGen = function(n) as.numeric(suppressWarnings(circular::rvonmises(n, 0, 3))),
                                  intervalSampler = function(n) runif(n, 0, 2),
                                  LBSampler = intervalSampler,
                                  UBSampler = intervalSampler) {
   t_actual <- trueDistGen(n)
   t_start  <- (t_actual - LBSampler(1)) %% (2*pi)
   t_end    <- (t_actual + UBSampler(1)) %% (2*pi)
-  data.frame(t_start = t_start,
-             t_end = t_end,
+  data.frame(t_start  = t_start,
+             t_end    = t_end,
              t_actual = t_actual)
 }
 
 
-# Create a function for circular interval censored analysis.
-getCircAoristicFunction <- function(d) {
+#' Aoristic Fraction function
+#'
+#' Create a function for circular interval censored analysis. The created
+#' function takes a vector `x` and returns the height of the aoristic fraction
+#' given that function.
+#'
+#' @param df A `data.frame` or matrix of which the first column represents the
+#'   lower bound and the second column represents the upper bound of the
+#'   observed intervals.
+#'
+#' @return The aoristic function.
+#' @export
+#'
+#' @examples
+#' df <- generateAoristicData(n = 5)
+#' myfun <- getCircAoristicFunction(df)
+#' ggplot(data.frame(x = c(0, 2*pi)), aes(x)) +
+#'   geom_hline(yintercept = 0, color = "gray") +
+#'   stat_function(fun = myfun, n = 1000) +
+#'   coord_polar() +
+#'   ylim(-1, NA) +
+#'   theme_void()
+getCircAoristicFunction <- function(df) {
   # The aoristic function is a mean of separate circular uniform distributions.
   Vectorize(function(x) mean(dcunif(x,
-                                    d$t_start,
-                                    d$t_end)))
+                                    df[, 1],
+                                    df[, 2])))
 }
 
