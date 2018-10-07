@@ -1,0 +1,13 @@
+Package: aoristic
+Type: Package
+Title: Analyses for aoristic (ie. interval-censored circular) data through descriptive, parametric and non-parametric models 
+Version: 0.1.9000
+Author: Kees Mulder
+Maintainer: Kees Mulder <keestimmulder@gmail.com>
+Description: A package for analysis of data that is circular and interval-censored,
+  in particular events of which the time of day is only observed up to an interval in which the event must have happened.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Depends: ggplot2, circular, dirichletprocess
+RoxygenNote: 6.1.0
