@@ -1,4 +1,4 @@
-Package: aoristic
+Package: aoristicinference
 Type: Package
 Title: Analyses for aoristic (ie. interval-censored circular) data through descriptive, parametric and non-parametric models 
 Version: 0.1.9000
