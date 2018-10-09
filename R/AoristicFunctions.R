@@ -33,8 +33,8 @@ generateAoristicData <- function(n = 30,
                                  LBSampler = intervalSampler,
                                  UBSampler = intervalSampler) {
   t_actual <- trueDistGen(n)
-  t_start  <- (t_actual - LBSampler(1)) %% (2*pi)
-  t_end    <- (t_actual + UBSampler(1)) %% (2*pi)
+  t_start  <- (t_actual - LBSampler(n)) %% (2*pi)
+  t_end    <- (t_actual + UBSampler(n)) %% (2*pi)
   data.frame(t_start  = t_start,
              t_end    = t_end,
              t_actual = t_actual)
