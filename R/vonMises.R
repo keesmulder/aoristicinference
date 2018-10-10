@@ -16,3 +16,42 @@ aoristicVML <- function(d) {
     )
   }
 }
+
+
+# create an aoristic von Mises log-likelihood function.
+aoristicVMLL <- function(d) {
+  # isAoristic <- !identical(d$t_start, d$t_end)
+  function(param) {
+    suppressWarnings(
+      sum(
+        log(vecVMCDF(ths = d$t_end, froms = d$t_start, mu = param[1], kp = param[2])) -
+          log( (d$t_end - d$t_start) %% (2*pi))
+      )
+    )
+  }
+}
+
+
+#' Get maximum likelihood estimates for the von Mises distribution based on aoristic data.
+#'
+#' @param d Data frame with columns `t_start` and `t_end`, which are the start and end times.
+#'
+#' @return Numeric vector of length two; estimates for mean direction `mu` and concentration parameter `kp`, respectively.
+#' @export
+#'
+#' @examples
+#' dat <- generateAoristicData()
+#' aoristicVMMLE(dat)
+aoristicVM_mle <- function(d, startingValues = c(0, 1)) {
+  aVMLL <- aoristicVMLL(d)
+  VMMLE <- optim(startingValues,
+                 aVMLL,
+                 control = list(fnscale = -1),
+                 lower = c(-(2*pi), 0), upper = c(4*pi, Inf),
+                 method = "L-BFGS-B")$par
+  VMMLE[1] <- VMMLE[1] %% (2*pi)
+
+  names(VMMLE) <- c("mu", "kp")
+
+  VMMLE
+}
