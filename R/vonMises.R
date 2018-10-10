@@ -40,7 +40,7 @@ aoristicVMLL <- function(d) {
 #' @export
 #'
 #' @examples
-#' dat <- generateAoristicData()
+#' dat <- generateAoristicData(n = 30)
 #' aoristicVMMLE(dat)
 aoristicVM_mle <- function(d, startingValues = c(0, 1)) {
   aVMLL <- aoristicVMLL(d)
