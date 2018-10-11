@@ -28,3 +28,26 @@ dcunif <- function(x, from = 0, to = 2*pi) {
          (x > from & x < to) / (to - from))
 }
 
+
+
+
+
+#' Mean direction of aoristic data.
+#'
+#' Compute the mean direction of an aoristic data frame. It is the mean
+#' direction of the midpoints.
+#'
+#' @param d Aoristic data frame.
+#' @param na.rm Logical; If \code{FALSE}, returns NA if there are missing
+#'   values.
+#'
+#' @return The mean direction in radians.
+#' @export
+#'
+#' @examples
+#' meanDirAoristic(generateAoristicData())
+#'
+meanDirAoristic <- function(d, na.rm = TRUE) {
+  atan2(sum(sin(d$t_start) + sin(d$t_end), na.rm),
+        sum(cos(d$t_start) + cos(d$t_end), na.rm))
+}
