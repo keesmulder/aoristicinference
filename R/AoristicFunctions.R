@@ -28,7 +28,7 @@
 #' generateAoristicData()
 #'
 generateAoristicData <- function(n = 30,
-                                 trueDistGen = function(n) as.numeric(suppressWarnings(circular::rvonmises(n, 0, 3))),
+                                 trueDistGen = function(n) as.numeric(suppressWarnings(circular::rvonmises(n, 1, 10))),
                                  intervalSampler = function(n) runif(n, 0, 2),
                                  LBSampler = intervalSampler,
                                  UBSampler = intervalSampler) {
