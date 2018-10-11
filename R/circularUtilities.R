@@ -49,5 +49,5 @@ dcunif <- function(x, from = 0, to = 2*pi) {
 #'
 meanDirAoristic <- function(d, na.rm = TRUE) {
   atan2(sum(sin(d$t_start) + sin(d$t_end), na.rm),
-        sum(cos(d$t_start) + cos(d$t_end), na.rm))
+        sum(cos(d$t_start) + cos(d$t_end), na.rm)) %% (2*pi)
 }
