@@ -31,27 +31,46 @@ aoristicVMLL <- function(d) {
   }
 }
 
+# create an aoristic von Mises log-likelihood function using the mean direction
+# estimate for mu.
+aoristicKpVMLL <- function(d, muhat) {
+  # isAoristic <- !identical(d$t_start, d$t_end)
 
-#' Get maximum likelihood estimates for the von Mises distribution based on aoristic data.
+  function(kp) {
+    suppressWarnings(
+      sum(
+        log(vecVMCDF(ths = d$t_end, froms = d$t_start, mu = muhat, kp = kp)) -
+          log( (d$t_end - d$t_start) %% (2*pi))
+      )
+    )
+  }
+}
+
+
+#' Get maximum likelihood estimates for the von Mises distribution based on
+#' aoristic data.
 #'
-#' @param d Data frame with columns `t_start` and `t_end`, which are the start and end times.
+#' @param d Data frame with columns \code{t_start} and \code{t_end}, which are
+#'   the start and end times.
+#' @param kp_max Maximum value of \code{kp} to search for.
+#' @param ... Additional arguments for the \code{optimize}.
 #'
-#' @return Numeric vector of length two; estimates for mean direction `mu` and concentration parameter `kp`, respectively.
+#' @return Numeric vector of length two; estimates for mean direction \code{mu}
+#'   and concentration parameter \code{kp}, respectively.
 #' @export
 #'
 #' @examples
-#' dat <- generateAoristicData(n = 30)
-#' aoristicVMMLE(dat)
-aoristicVM_mle <- function(d, startingValues = c(0, 1)) {
-  aVMLL <- aoristicVMLL(d)
-  VMMLE <- optim(startingValues,
-                 aVMLL,
-                 control = list(fnscale = -1),
-                 lower = c(-(2*pi), 0), upper = c(4*pi, Inf),
-                 method = "L-BFGS-B")$par
-  VMMLE[1] <- VMMLE[1] %% (2*pi)
+#' dat <- generateAoristicData(n = 200)
+#' aoristic_vm_mle(dat)
+aoristic_vm_mle <- function(d, kp_max = 100, ...) {
 
-  names(VMMLE) <- c("mu", "kp")
+  mu_hat <- meanDirAoristic(d)
 
-  VMMLE
+  kp_hat <- optimize(aoristicKpVMLL(d, mu_hat),
+                     c(0, kp_max),
+                     maximum = TRUE,
+                     ...)$`maximum`
+
+  c(mu = mu_hat, kp = kp_hat)
 }
+
