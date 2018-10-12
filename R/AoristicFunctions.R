@@ -40,6 +40,23 @@ generateAoristicData <- function(n = 30,
              t_actual = t_actual)
 }
 
+#' Create an aoristic data frame.
+#'
+#' @param start Start of the interval.
+#' @param end End of the interval.
+#' @param rest Data frame; All other columns to add to the aoristic data frame.
+#'
+#' @return A data frame of class \code{"aoristic_df"} with at least columns
+#'   \code{t_start} and \code{t_end},
+#' @export
+#'
+aoristic_df <- function(start, end, rest = NULL) {
+  aodf <- data.frame(t_start = start, t_end = end)
+  if (!is.null(rest)) aodf <- cbind(aodf, rest)
+  class(aodf) <- c("aoristic_df", class(aodf))
+  aodf
+}
+
 
 #' Aoristic Fraction function
 #'
@@ -66,7 +83,7 @@ generateAoristicData <- function(n = 30,
 getCircAoristicFunction <- function(df) {
   # The aoristic function is a mean of separate circular uniform distributions.
   Vectorize(function(x) mean(dcunif(x,
-                                    df[, 1],
-                                    df[, 2])))
+                                    df$t_start,
+                                    df$t_end)))
 }
 
