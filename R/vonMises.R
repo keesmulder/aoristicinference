@@ -66,7 +66,9 @@ aoristic_vm_mle <- function(d, kp_max = 100, ...) {
 
   mu_hat <- meanDirAoristic(d)
 
-  kp_hat <- optimize(aoristicKpVMLL(d, mu_hat),
+  this_kp_ll <- aoristicKpVMLL(d, mu_hat)
+
+  kp_hat <- optimize(this_kp_ll,
                      c(0, kp_max),
                      maximum = TRUE,
                      ...)$`maximum`
