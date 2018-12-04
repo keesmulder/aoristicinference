@@ -1,5 +1,16 @@
-context("aoristic fraction method works")
+context("Aoristic fraction method")
 
+
+test_that("Aoristic generation", {
+
+  n <- 80
+  prop <- .4
+  dat <- generateAoristicData(n = n, aoristicProportion = prop)
+
+  expect_equal(mean(dat$t_start == dat$t_end), 1 - prop)
+
+
+})
 
 test_that("Utilities are sensible", {
 

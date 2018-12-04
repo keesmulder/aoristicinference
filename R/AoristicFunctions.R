@@ -37,18 +37,20 @@ generateAoristicData <- function(n = 30,
   t_actual <- trueDistGen(n)
 
   if (aoristicProportion > 1 || aoristicProportion < 0) stop("Invalid aoristic proportion.")
+
   n_aor <- round(n * aoristicProportion)
 
+  is_aoristic <- c(rep(TRUE, n_aor), rep(FALSE, n - n_aor))[sample(1:n)]
 
-  rep()
-  is_aoristic <-
-    sample(1:n), n, replace = TRUE, aoristicProportion)
 
-  t_start  <- (t_actual - LBSampler(n)) %% (2*pi)
-  t_end    <- (t_actual + UBSampler(n)) %% (2*pi)
-  data.frame(t_start  = t_start,
-             t_end    = t_end,
-             t_actual = t_actual)
+  # All non-aoristics stay true to the actual, all others are made aoristic
+  t_start <- t_end <- t_actual
+  t_start[is_aoristic]  <- (t_actual[is_aoristic] - LBSampler(n_aor)) %% (2*pi)
+  t_end[is_aoristic]    <- (t_actual[is_aoristic] + UBSampler(n_aor)) %% (2*pi)
+
+  aoristic_df(start  = t_start,
+              end    = t_end,
+              data.frame(t_actual = t_actual))
 }
 
 #' Create an aoristic data frame.
