@@ -31,8 +31,19 @@ generateAoristicData <- function(n = 30,
                                  trueDistGen = function(n) as.numeric(suppressWarnings(circular::rvonmises(n, 1, 10))),
                                  intervalSampler = function(n) runif(n, 0, 2),
                                  LBSampler = intervalSampler,
-                                 UBSampler = intervalSampler) {
+                                 UBSampler = intervalSampler,
+                                 aoristicProportion = 1) {
+
   t_actual <- trueDistGen(n)
+
+  if (aoristicProportion > 1 || aoristicProportion < 0) stop("Invalid aoristic proportion.")
+  n_aor <- round(n * aoristicProportion)
+
+
+  rep()
+  is_aoristic <-
+    sample(1:n), n, replace = TRUE, aoristicProportion)
+
   t_start  <- (t_actual - LBSampler(n)) %% (2*pi)
   t_end    <- (t_actual + UBSampler(n)) %% (2*pi)
   data.frame(t_start  = t_start,
