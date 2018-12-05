@@ -23,6 +23,24 @@ circ_quantile    <- function(x, ...) {
 
 
 
+#' Obtain bootstrap standard errors for aoristic von Mises MLE's
+#'
+#' @param data Aoristic Data with columns t_start and t_end.
+#' @param R Number of bootstrap samples.
+#' @param probs Confidence interval probabilities.
+#' @param kp_max Maximum possible value of concentration parameter kappa to
+#'   consider in the optimization.
+#' @param tol Tolerance of the optimization.
+#' @param ... Further arguments to \code{boot}, such as arguments to enable
+#'   parallel computation.
+#'
+#' @return An object of type \cpde{aovmboot} containing a table of results, the
+#'   bootstrap sample, and the original \code{boot} object.
+#' @export
+#'
+#' @examples
+#' dat <- generateAoristicData()
+#' aoristic_vm_bootstrap(dat, R = 4)
 aoristic_vm_bootstrap <- function(data, R = 1000L, probs = c(.025, .975), kp_max = 100, tol =.01, ...) {
 
   # Compute the bootstrap using the boot package.
