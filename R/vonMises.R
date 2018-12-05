@@ -159,7 +159,7 @@ aoristic_vm_mle <- function(d, kp_max = 100, ...) {
 
   this_kp_ll <- aoristicKpVMLL(d, mu_hat)
 
-  kp_hat <- optimize(this_kp_ll,
+  kp_hat <- stats::optimize(this_kp_ll,
                      c(0, kp_max),
                      maximum = TRUE,
                      ...)$`maximum`
