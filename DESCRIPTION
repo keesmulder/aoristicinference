@@ -9,5 +9,5 @@ Description: A package for analysis of data that is circular and interval-censor
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Depends: ggplot2, circular, dirichletprocess
 RoxygenNote: 6.1.0
+Imports: boot,  ggplot2, circular, dirichletprocess
