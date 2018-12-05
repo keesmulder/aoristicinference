@@ -23,7 +23,7 @@ consider in the optimization.}
 parallel computation.}
 }
 \value{
-An object of type \cpde{aovmboot} containing a table of results, the
+An object of type \code{aovmboot} containing a table of results, the
   bootstrap sample, and the original \code{boot} object.
 }
 \description{

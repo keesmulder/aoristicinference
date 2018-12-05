@@ -34,7 +34,7 @@ circ_quantile    <- function(x, ...) {
 #' @param ... Further arguments to \code{boot}, such as arguments to enable
 #'   parallel computation.
 #'
-#' @return An object of type \cpde{aovmboot} containing a table of results, the
+#' @return An object of type \code{aovmboot} containing a table of results, the
 #'   bootstrap sample, and the original \code{boot} object.
 #' @export
 #'
