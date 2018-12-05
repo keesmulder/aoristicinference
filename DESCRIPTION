@@ -6,7 +6,7 @@ Author: Kees Mulder
 Maintainer: Kees Mulder <keestimmulder@gmail.com>
 Description: A package for analysis of data that is circular and interval-censored,
   in particular events of which the time of day is only observed up to an interval in which the event must have happened.
-License: GPL-3
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
