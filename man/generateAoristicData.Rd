@@ -7,7 +7,8 @@
 generateAoristicData(n = 30, trueDistGen = function(n)
   as.numeric(suppressWarnings(circular::rvonmises(n, 1, 10))),
   intervalSampler = function(n) runif(n, 0, 2),
-  LBSampler = intervalSampler, UBSampler = intervalSampler)
+  LBSampler = intervalSampler, UBSampler = intervalSampler,
+  aoristicProportion = 1)
 }
 \arguments{
 \item{n}{The desired sample size.}

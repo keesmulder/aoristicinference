@@ -15,7 +15,7 @@ circ_sd          <- function(x) sqrt(-2 * log(resultant_length(x)))
 circ_quantile    <- function(x, ...) {
   # The desired rotation before taking the quantile.
   rotation <- circ_mean(x)
-  # Centre the data, and move it as far away from 0 radians as possible by
+  # Center the data, and move it as far away from 0 radians as possible by
   # th+rot. Then, apply the quantile function, and rotate back.
   force_neg_pi_pi(quantile(force_neg_pi_pi(x - rotation), ...) + rotation)
 }
