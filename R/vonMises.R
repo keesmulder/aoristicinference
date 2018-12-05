@@ -74,7 +74,7 @@ dvm <- function(x, mu = 0, kp = 1, log = FALSE) {
 # Auxiliary function to compute the von Mises CDF with a vector of angles and a
 # vector of 'from' values. We have to make sure that the two vectors are of equal length.
 vecVMCDF <- function(froms, tos, mu, kp, tol = 1e-10) {
-  vapply(1:length(tos), function(i) pvmrad(q = tos[i], mu = mu, kappa = kp, from = froms[i], tol = tol), FUN.VALUE = 0)
+  vapply(seq_along(tos), function(i) pvmrad(q = tos[i], mu = mu, kappa = kp, from = froms[i], tol = tol), FUN.VALUE = 0)
 }
 
 
