@@ -9,7 +9,7 @@ print.aovmboot <- function(object, ...) print(object$tab, ...)
 # Quick convenience functions for circular sd and means
 force_neg_pi_pi  <- function(x) ((x + pi) %% (2*pi)) - pi
 resultant_length <- function(x) sqrt(sum(sin(x))^2 + sum(cos(x))^2)/length(x)
-circ_mean        <- function(x) atan2(sum(sin(x)), sum(cos(x)))
+circ_mean        <- function(x) force_neg_pi_pi(atan2(sum(sin(x)), sum(cos(x))))
 circ_var         <- function(x) 1 - resultant_length(x)
 circ_sd          <- function(x) sqrt(-2 * log(resultant_length(x)))
 circ_quantile    <- function(x, ...) {
