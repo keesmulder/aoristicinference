@@ -48,20 +48,16 @@ aoristic_vm_bootstrap <- function(data, R = 1000L, probs = c(.025, .975), kp_max
     aovmleboot <- boot::boot(data, ao_vm_mle_bootver, R = R, kp_max = kp_max, tol = tol, ...)
   })
 
-  # Obtain the p-values for t0 > 0, which will be taken as 1 - p for t0 < 0.
-  ps <- apply(aovmleboot$t, 2L, function(x) mean(x <= 0))
-
   # Obtain result
+  this_t0 <- c(force_neg_pi_pi(aovmleboot$t0[1]), aovmleboot$t0[2])
   mus <- aovmleboot$t[, 1]
   kps <- aovmleboot$t[, 2]
   boot_est <- c(circ_mean(mus), mean(kps))
-  res <- list(tab = cbind(original        = aovmleboot$t0,
+  res <- list(tab = cbind(original        = this_t0,
                           "boot estimate" = boot_est,
-                          bias            = boot_est - aovmleboot$t0,
+                          bias            = boot_est - this_t0,
                           "std. error"    = c(circ_sd(mus), sd(kps)),
-                          rbind(circ_quantile(mus, probs = probs), quantile(kps, probs = probs)),
-                          "one-sided p-value"    = ifelse(aovmleboot$t0 > 0, ps, 1 - ps),
-                          "two-sided p-value"    = ifelse(aovmleboot$t0 > 0, ps*2, (1 - ps) * 2 )),
+                          rbind(circ_quantile(mus, probs = probs), quantile(kps, probs = probs))),
               bootsam = aovmleboot$t,
               bootobj = aovmleboot)
 
