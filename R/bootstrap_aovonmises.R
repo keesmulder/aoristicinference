@@ -1,7 +1,3 @@
-# ao mle function prepared for the boot package.
-ao_vm_mle_bootver <- function(data, inds, kp_max, ...) {
-  aoristic_vm_mle(data[inds, ], kp_max,  ...)
-}
 
 
 print.aovmboot <- function(object, ...) print(object$tab, ...)
@@ -18,6 +14,12 @@ circ_quantile    <- function(x, ...) {
   # Center the data, and move it as far away from 0 radians as possible by
   # th+rot. Then, apply the quantile function, and rotate back.
   force_neg_pi_pi(quantile(force_neg_pi_pi(x - rotation), ...) + rotation)
+}
+rad_to_hr_mn <- function(x) {
+  hrs_frac <- (x %% (2*pi)) * 24 / (2*pi)
+  hrs <- floor(hrs_frac)
+  mns <- sprintf("%02.0f", round((hrs_frac - hrs) * 60, 0))
+  paste0(sprintf("%02.0f", hrs), ":", mns)
 }
 
 
@@ -43,6 +45,11 @@ circ_quantile    <- function(x, ...) {
 #' aoristic_vm_bootstrap(dat, R = 4)
 aoristic_vm_bootstrap <- function(data, R = 1000L, probs = c(.025, .975), kp_max = 100, tol =.01, ...) {
 
+  # ao mle function prepared for the boot package.
+  ao_vm_mle_bootver <- function(data, inds, kp_max, ...) {
+    aoristic_vm_mle(data[inds, ], kp_max,  ...)
+  }
+
   # Compute the bootstrap using the boot package.
   suppressWarnings({
     aovmleboot <- boot::boot(data, ao_vm_mle_bootver, R = R, kp_max = kp_max, tol = tol, ...)
@@ -53,11 +60,15 @@ aoristic_vm_bootstrap <- function(data, R = 1000L, probs = c(.025, .975), kp_max
   mus <- aovmleboot$t[, 1]
   kps <- aovmleboot$t[, 2]
   boot_est <- c(circ_mean(mus), mean(kps))
-  res <- list(tab = cbind(original        = this_t0,
-                          "boot estimate" = boot_est,
-                          bias            = boot_est - this_t0,
-                          "std. error"    = c(circ_sd(mus), sd(kps)),
-                          rbind(circ_quantile(mus, probs = probs), quantile(kps, probs = probs))),
+  tab <-  rbind(original        = this_t0,
+                "boot estimate" = boot_est,
+                bias            = boot_est - this_t0,
+                "std. error"    = c(circ_sd(mus), sd(kps)),
+                cbind(circ_quantile(mus, probs = probs), quantile(kps, probs = probs)))
+
+  mu_hrs <- rad_to_hr_mn(tab[, 1])
+  mu_hrs[4] <- ""
+  res <- list(tab = data.frame(mean_hours = mu_hrs, tab),
               bootsam = aovmleboot$t,
               bootobj = aovmleboot)
 
