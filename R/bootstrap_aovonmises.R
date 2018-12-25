@@ -18,7 +18,7 @@ circ_quantile    <- function(x, ...) {
 rad_to_hr_mn <- function(x) {
   hrs_frac <- (x %% (2*pi)) * 24 / (2*pi)
   hrs <- floor(hrs_frac)
-  mns <- sprintf("%02.0f", round((hrs_frac - hrs) * 60, 0))
+  mns <- sprintf("%02.0f", floor((hrs_frac - hrs) * 60))
   paste0(sprintf("%02.0f", hrs), ":", mns)
 }
 
